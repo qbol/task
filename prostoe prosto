@@ -1,0 +1,206 @@
+/*
+  Name: prostoe prosto
+  Author: bao
+  Date: 07.03.13 23:22
+  Description: поиск простых чисел,
+               не превосходящие заданное число или
+               заданное количество (в рамках разумного).
+*/
+
+#include <iostream>
+#include <locale>
+#include <math.h>
+#include <fstream.h> //для чтения записи файлов
+using namespace std;
+
+////// prostoe //////
+int prostoe_n (int n)
+{
+    int i=2,ii=2;
+    int korn=1,ost=1;
+    int f=1;
+    int N=0;
+    ofstream outputFile("prostoe.txt");
+    
+    for (i=1; i <= n; i++)
+    {
+     //////////////////////////////////
+     f = 1; // возврат флага в исходное состояние
+    korn = (int)sqrt(i)+1;
+     for (ii=2; ii <(korn+1);)
+         {
+           ost = i%ii;
+
+             if ( ost == 0)
+              {
+                  f = 0;
+                  break;
+                    }
+                    ii = ii + 1;
+         }
+         
+     //Флаг    
+     if ( f == 1)
+     {
+          //printf ("число %d простое \n\n",i);
+          outputFile << i << " ";
+          N = N +1;
+          if (N%20 ==0) outputFile << endl;
+          }
+     //////////////////////////////////
+    }
+    printf ("\n\n найдено %d простых чисел \n", N);
+    printf (" файл prostoe.txt\n");
+    outputFile.close();
+    return 0;
+}
+///////////////////////////////////////////////////////////////
+
+////// n_prostoe ////// вывод заданного числа простых чисел
+int n_prostoe (int d)
+{
+    ofstream outputFile("n_prostoe.txt");
+    
+    //int d = 40;
+    
+    int p;
+    int pr=0;
+    int ii=1;
+    int korn=1,ost=1;
+    int f=1;
+    int N=1; //чтобы учитывать 2
+    int c=0;
+    int num=1;
+    
+    outputFile << 2 << " ";
+    for (p=1;p <= d;p++)
+    {
+        
+             for (c=2;c <= (d*1000);c++)
+             {
+                 f = 1; // возврат флага в исходное состояние
+                 if ( N < d)
+                 { 
+                     korn = (int)sqrt(c)+1;
+                     for (ii=2; ii <(korn+1);)
+                         {
+                               ost = c%ii;
+                               //printf ("# %d ## %d   ## %d\n",c,ii,ost);
+                               
+                                 if ( ost == 0)
+                                  {
+                                      f = 0;
+                                      break;
+                                  }
+                                        
+                               ii = ii + 1;
+                         }
+                         
+                         // по существу Флаг    
+                         if ( f == 1)
+                         {
+                              //printf ("число %d простое \n\n",c);
+                              outputFile << c << "\x9";
+                              
+                              N = N +1;
+                              
+                              if ( d > 1000 ){
+                                   pr = pr + 1;
+                                   if ( pr%1000 == 0){
+                                      printf ("сейчас найдено %d \n",N);
+                                   }
+                                }      
+   
+                              if (N%20 ==0)
+                              {
+                                 outputFile << endl;
+                                 }
+                         }
+                     } else break;
+             }          
+    }
+    //////////////////////////////////
+    
+    outputFile.close();
+    
+    printf (" файл n_prostoe.txt\n");
+    outputFile.close();
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////
+int wibor_menu ()
+    {
+    int w = 0;
+    int n = 0, d=0;
+    
+    printf ("вывод простых чисел до указанного числа = 1 \n");
+    printf ("вывод заданного числа простых чисел     = 2 \n");
+    printf ("выход = 0\n");
+    
+    scanf ("%d",&w);
+    
+    switch (w)
+    {
+           case 1: {
+                printf (" введите число до которого ищем простое\n");
+                scanf ("%d",&n);
+    
+                if ( n <= 0)
+                {
+                 printf ("число вне диапозона\n");
+                 break;
+                } else {
+                       if (d > 10000000 ){
+                             printf ("нет в этом я вам не помошник ... \n");
+                             }
+                       }
+                
+                prostoe_n (n);
+                break;
+                }
+                
+                
+           case 2: {
+                printf (" введите сколько ищем простых чисел\n");
+                scanf ("%d",&d);
+    
+                if ( d <= 0)
+                {
+                 printf ("число вне диапозона\n");
+                 break;
+                } else {
+                       if (d > 1000000000 ){
+                             printf ("нет в этом я вам не помошник ... \n");
+                             }
+                       }
+                
+                n_prostoe (d);
+                break;     
+                }
+                
+                
+           case 0: {
+                printf ("Пока ..\n");
+                break;     
+                }     
+           default: printf ("значение выбрано не коректно\n");
+           }
+           
+          return 0; 
+    }       
+///////////////////////////////////////////////////////////////
+
+////// Основная функция //////
+int main ()
+{
+    // локальные переменные
+    //int n = 0;
+    setlocale(LC_ALL,".1251");
+    
+    wibor_menu();               
+    
+    system ("pause");
+    return 0;    
+ }
+     
